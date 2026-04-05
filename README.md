@@ -10,8 +10,10 @@
 <img src="https://img.shields.io/badge/Rich-Terminal_UI-purple?style=flat-square" alt="Rich"/>
 <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="License"/>
 <img src="https://img.shields.io/badge/Privacy-100%25_Local-06d6a0?style=flat-square" alt="100% Local"/>
+<img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white"/>
 
-<br/><br/>
+
+<img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white"/><br/><br/>
 
 **Turn raw CSV data into polished, professional reports — powered entirely by a local LLM.**
 <br/>
@@ -150,7 +152,84 @@ cat report.md
 
 That's it. The CLI reads your CSV, profiles every column, sends the statistical summary to Gemma 4, and saves a fully structured Markdown report with YAML frontmatter.
 
+
+## 🐳 Docker Deployment
+
+Run this project instantly with Docker — no local Python setup needed!
+
+### Quick Start with Docker
+
+```bash
+# Clone and start
+git clone https://github.com/kennedyraju55/pdf-report-generator.git
+cd pdf-report-generator
+docker compose up
+
+# Access the web UI
+open http://localhost:8501
+```
+
+### Docker Commands
+
+| Command | Description |
+|---------|-------------|
+| `docker compose up` | Start app + Ollama |
+| `docker compose up -d` | Start in background |
+| `docker compose down` | Stop all services |
+| `docker compose logs -f` | View live logs |
+| `docker compose build --no-cache` | Rebuild from scratch |
+
+### Architecture
+
+```
+┌─────────────────┐     ┌─────────────────┐
+│   Streamlit UI  │────▶│   Ollama + LLM  │
+│   Port 8501     │     │   Port 11434    │
+└─────────────────┘     └─────────────────┘
+```
+
+> **Note:** First run will download the Gemma 4 model (~5GB). Subsequent starts are instant.
+
 ---
+
+
+---
+
+
+---
+
+## ⚡ REST API
+
+Every project includes a FastAPI REST API with auto-generated docs.
+
+### Start the API Server
+
+```bash
+# Run directly
+uvicorn src.report_generator.api:app --reload --port 8000
+
+# Or with Docker
+docker compose up
+```
+
+### API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/health` | Health check |
+| `GET` | `/docs` | Interactive Swagger UI |
+| `GET` | `/redoc` | ReDoc documentation |
+| `POST` | `/analyze` | Main analysis endpoint |
+
+### Example Request
+
+```bash
+curl -X POST http://localhost:8000/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"text": "your input here"}'
+```
+
+> 📖 Visit `http://localhost:8000/docs` for the full interactive API documentation.
 
 ## 📦 Installation
 
